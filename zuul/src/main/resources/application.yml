@@ -1,0 +1,47 @@
+server:
+  port: 5000
+
+spring:
+  application:
+    name: zuul
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://${EUREKA_HOST}:${EUREKA_PORT}/eureka/
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 20000
+
+ribbon:
+  ReadTimeout: 20000
+  ConnectTimeout: 20000
+
+zuul:
+  ignoredServices: '*'
+  host:
+    connect-timeout-millis: 20000
+    socket-timeout-millis: 20000
+
+  routes:
+    routes:
+    demo:
+      path: /demo/**
+      serviceId: eureka-service
+      stripPrefix: false
+      sensitiveHeaders: Cookie,Set-Cookie,Authorization
+    user:
+      path: /user/**
+      serviceId: eureka-service
+      stripPrefix: false
+      sensitiveHeaders: Cookie,Set-Cookie,Authorization
+    outer:
+      path: /baidu/**
+      url: http://www.baidu.com
+
+  
